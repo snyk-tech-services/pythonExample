@@ -1,5 +1,7 @@
 from flask import Flask
 
+# Just a little app the test the snyk fix actions
+
 app = Flask(__name__)
 @app.route('/hello/', methods=['GET', 'POST'])
 def welcome():
