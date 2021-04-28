@@ -1,5 +1,7 @@
 name: Example workflow using Snyk fix
 on: push
+inputs:
+  command: fix
 jobs:
   security:
     runs-on: ubuntu-latest
