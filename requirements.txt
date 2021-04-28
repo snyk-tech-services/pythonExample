@@ -1,5 +1,6 @@
 Flask==0.12.5
-Jinja2==2.11.3
-Django==2.2.18
+Jinja2==2.7.2
+Django==1.6.1
 python-etcd==0.4.5
+Django-Select2==6.0.1
 pytest-qt-app===1.0.0
