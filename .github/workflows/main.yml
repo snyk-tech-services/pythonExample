@@ -9,6 +9,7 @@ jobs:
         uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with: fix
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v2.1
