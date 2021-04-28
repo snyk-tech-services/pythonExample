@@ -9,17 +9,19 @@ jobs:
         uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with: fix
-      #- name: Get changed files
-      #  id: changed-files
-      #  uses: tj-actions/changed-files@v2.1
-      #- name: create PR if some changed file
-      #  if: steps.verify_changed_files.outputs.files_changed == 'true'
-      #  id: cpr
-      #  uses: peter-evans/create-pull-request@v3
-        #run: |
-        #  echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-        #  echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"      
+        with: 
+          command: fix
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v2.1
+      - name: create PR if some changed file
+        if: steps.verify_changed_files.outputs.files_changed == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+      - name: get PR info
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"      
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
