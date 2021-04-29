@@ -1,3 +1,11 @@
 
-Jinja2==2.11.3
+click==7.1.2
 Django==2.2.18
+dnspython==2.1.0
+Flask==0.12.5
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+python-etcd==0.4.5
+urllib3==1.26.4
+Werkzeug==0.16.1
