@@ -11,7 +11,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with: 
           command: fix
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: create a PR
         uses: peter-evans/create-pull-request@v3
       - name: get PR info
