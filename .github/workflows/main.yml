@@ -11,10 +11,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with: 
           command: fix
-      - name: check uncommited changes
-        uses: mskri/check-uncommitted-changes-action@v1.0.1
-      - name: Print uncommitted changes
-        if: steps.check-changes.outputs.changes != ''
+      - name: create a PR
         uses: peter-evans/create-pull-request@v3
       - name: get PR info
         run: |
