@@ -14,6 +14,8 @@ jobs:
           base: master
       - name: create a PR
         uses: peter-evans/create-pull-request@v3
+        with:
+          base: master
       - name: get PR info
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
