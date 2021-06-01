@@ -12,6 +12,13 @@ jobs:
         with: 
           command: fix
           base: master
+      - name: skip-workflow
+        id: skip-workflow # id used for referencing step
+        uses: saulmaldonado/skip-workflow@v1
+        with:
+          phrase: 'create-pull-request action'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: create a PR
         uses: peter-evans/create-pull-request@v3
         with:
