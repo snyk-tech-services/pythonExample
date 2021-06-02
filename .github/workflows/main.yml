@@ -10,7 +10,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with: 
-          command: fix
+          command: fix # adding this option to run snyk fix
           base: master
       - name: skip-workflow
         id: skip-workflow 
