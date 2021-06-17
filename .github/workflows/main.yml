@@ -25,8 +25,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with: 
-          command: fix # adding this option to run snyk fix
-          base: master    
+          command: fix # adding this option to run snyk fix 
       - name: create a PR
         uses: peter-evans/create-pull-request@v3
         with:
