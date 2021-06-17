@@ -10,11 +10,15 @@ jobs:
         uses: saulmaldonado/skip-workflow@v1.1.0
         with:
           phrase: 'automated change'
-          pr-message: 'Merge pull request'
-          search: '["commit_messages", "pull_request"]'
-          github-token: ${{ secrets.GITHUB_TOKEN }}  
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: skip-workflow 2
+        id: skip-workflow-2
+        uses: saulmaldonado/skip-workflow@v1.1.0
+        with:
+          phrase: 'Merge pull request'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Snyk to check for vulnerabilities
-        if: ${{ !steps.skip-workflow.outputs.skip }}
+        if: ${{ !steps.skip-workflow.outputs.skip }} || ${{ !steps.skip-workflow-2.outputs.skip }}
         uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -22,7 +26,7 @@ jobs:
           command: fix # adding this option to run snyk fix
           base: master    
       - name: create a PR
-        if: ${{ !steps.skip-workflow.outputs.skip }}
+        if: ${{ !steps.skip-workflow.outputs.skip }} || ${{ !steps.skip-workflow-2.outputs.skip }}
         uses: peter-evans/create-pull-request@v3
         with:
           base: test
