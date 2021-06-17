@@ -10,6 +10,8 @@ jobs:
         uses: saulmaldonado/skip-workflow@v1.1.0
         with:
           phrase: 'automated change'
+          pr-message: 'Merge pull request'
+          search: '["commit_messages", "pull_request"]'
           github-token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Run Snyk to check for vulnerabilities
         if: ${{ !steps.skip-workflow.outputs.skip }}
