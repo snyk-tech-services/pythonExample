@@ -9,7 +9,7 @@ jobs:
         id: skip-workflow 
         uses: saulmaldonado/skip-workflow@v1.1.0
         with:
-          phrase: 'create-pull-request action'
+          phrase: 'automated change'
           github-token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Run Snyk to check for vulnerabilities
         if: ${{ !steps.skip-workflow.outputs.skip }}
