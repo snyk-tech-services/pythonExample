@@ -5,24 +5,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with: 
-          command: fix # adding this option to run snyk fix
-          base: master
       - name: skip-workflow
         id: skip-workflow 
         uses: saulmaldonado/skip-workflow@v1.1.0
         with:
           phrase: 'create-pull-request action'
-          github-token: ${{ secrets.GITHUB_TOKEN }}        
+          github-token: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Run Snyk to check for vulnerabilities
+        if: ${{ !steps.skip-workflow.outputs.skip }}
+        uses: snyk/actions/python-3.8@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with: 
+          command: fix # adding this option to run snyk fix
+          base: master    
       - name: create a PR
+        if: ${{ !steps.skip-workflow.outputs.skip }}
         uses: peter-evans/create-pull-request@v3
         with:
           base: test
       - name: get PR info
+        if: ${{ !steps.skip-workflow.outputs.skip }}
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"      
