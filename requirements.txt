@@ -1,3 +1,4 @@
+Flask==0.12.5
+Jinja2==2.11.3
 Django==2.2.18
-
-
+python-etcd==0.4.5
