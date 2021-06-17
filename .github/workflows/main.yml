@@ -5,20 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: skip-workflow
-        id: skip-workflow 
-        uses: saulmaldonado/skip-workflow@v1.1.0
-        with:
-          phrase: 'automated change'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: skip-workflow 2
-        id: skip-workflow-2
-        uses: saulmaldonado/skip-workflow@v1.1.0
-        with:
-          phrase: 'Merge pull request'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Snyk to check for vulnerabilities
-        if: ${{ !steps.skip-workflow.outputs.skip }} || ${{ !steps.skip-workflow-2.outputs.skip }}
+        if: "!contains(github.event.head_commit.message, 'Merge pull request')" 
         uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -26,12 +14,11 @@ jobs:
           command: fix # adding this option to run snyk fix
           base: master    
       - name: create a PR
-        if: ${{ !steps.skip-workflow.outputs.skip }} || ${{ !steps.skip-workflow-2.outputs.skip }}
+        if: "!contains(github.event.head_commit.message, 'automated changes')"
         uses: peter-evans/create-pull-request@v3
         with:
           base: test
       - name: get PR info
-        if: ${{ !steps.skip-workflow.outputs.skip }}
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"      
