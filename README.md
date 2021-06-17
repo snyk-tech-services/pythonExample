@@ -1,29 +1,41 @@
 # Example of workflow using snyk fix and create-pull-request
 
 This workflow run snyk fix and open a PR with snyk fix changes.
-We use the skip step to avoid running snyk fix when pushing the automated PR changes as this could result to openning a new PR.
+To avoid incrementing the versions from more than one this workflow starts by checking the last commit message to avoid re-running snyk fix if the last commit was already an automated fix.
 
 Here are the steps to require to do this (full exampe under .github/workflows/main.yml) :
 
-      steps:
+     jobs:
+        init:
+          runs-on: ubuntu-latest
+          outputs:
+            skip: ${{ steps.ci-skip-step.outputs.ci-skip }}
+            skip-not: ${{ steps.ci-skip-step.outputs.ci-skip-not }}
+          steps:
+            - uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
+            - id: ci-skip-step
+              uses: mstachniuk/ci-skip@master
+              with:
+                commit-filter: 'Merge pull request'
+        security:
+          runs-on: ubuntu-latest
+          needs: init
+          if: ${{ needs.init.outputs.skip == 'false' }}
+          steps:
             - uses: actions/checkout@master
             - name: Run Snyk to check for vulnerabilities
               uses: snyk/actions/python-3.8@master
               env:
                 SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
               with: 
-                command: fix
-                base: master
-            - name: skip-workflow 
-              id: skip-workflow 
-              uses: saulmaldonado/skip-workflow@v1.1.0
-              with:
-                phrase: 'create-pull-request action'
-                github-token: ${{ secrets.GITHUB_TOKEN }}
+                command: fix # adding this option to run snyk fix
+                base: master    
             - name: create a PR
               uses: peter-evans/create-pull-request@v3
               with:
-                base: master
+                base: test
             - name: get PR info
               run: |
                 echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
