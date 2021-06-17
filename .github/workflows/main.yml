@@ -3,10 +3,10 @@ on: pull_request
 jobs:
   security:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'Merge pull request')"
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
-        if: "!contains(github.event.head_commit.message, 'Merge pull request')" 
         uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -14,7 +14,6 @@ jobs:
           command: fix # adding this option to run snyk fix
           base: master    
       - name: create a PR
-        if: "!contains(github.event.head_commit.message, 'automated changes')"
         uses: peter-evans/create-pull-request@v3
         with:
           base: test
