@@ -3,7 +3,8 @@
 This workflow run snyk fix and open a PR with snyk fix changes.
 To avoid incrementing the versions from more than one this workflow starts by checking the last commit message to avoid re-running snyk fix if the last commit was already an automated fix.
 
-Here are the steps to require to do this (full exampe under .github/workflows/main.yml) :
+Here are the steps to require to do this (full example under .github/workflows/main.yml) :
+Please make sure to add the SNYK_TOKEN to your repository and change the 'base' branches in each steps to match your configuration.
 
      jobs:
         init:
@@ -35,7 +36,7 @@ Here are the steps to require to do this (full exampe under .github/workflows/ma
             - name: create a PR
               uses: peter-evans/create-pull-request@v3
               with:
-                base: test
+                base: test # pull request base branch
             - name: get PR info
               run: |
                 echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
